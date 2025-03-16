@@ -1,4 +1,4 @@
 edgar-tool
 streamlit
 pandas
-matplotlib
+altair
