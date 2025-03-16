@@ -9,6 +9,10 @@ import uuid
 
 container_style = """
     <style>
+        * { 
+            font-family: Arial, sans-serif
+        }
+
         .st-key-container {
             background-color: #FFFFFF;
             padding: 20px;
@@ -18,7 +22,7 @@ container_style = """
         }
 
         .st-key-search {
-            background-color: #000000; /* Yellow background */
+            background-color: #000000;
             border: 3px solid #000000; /* Thick black border */
             color: #FFFFFF; /* Black text */
             font-size: 24px; /* Larger font size */
@@ -53,7 +57,7 @@ with st.container(border=False,key="container"):
     # Streamlit UI
     #st.title("EDGAR Tool Search")
     st.text(" ")
-    st.html("<p style='font-size: 32px; text-align: center; font-weight: bold;'>🔍 SEC Filings Text Analytics 📈</p>")
+    st.html("<p style='font-size: 39px; text-align: center; font-weight: bold;'>🔍 SEC Filings Text Analytics 📈</p>")
     st.html("<p style='font-size: 20px; text-align: center;'>Search millions of SEC 10-K filings for keywords and visualize trends.</p>")
     # User inputs
     col1, col2, col3, col4 = st.columns(4)
@@ -107,7 +111,21 @@ with st.container(border=False,key="container"):
                             y='Count:Q',
                             tooltip=['Year', 'Count']
                         ).properties(
-                            title=f'SEC 10-K Filings by Year Containing "{query}"',
+                            title={
+                                "text": f'SEC 10-K Filings by Year Containing "{query}"',
+                                "subtitle": f"From {start_year} to {end_year} via SEC's EDGAR",
+                                "align":"left",
+                                "anchor":"start"},
+                            usermeta={
+                            "embedOptions": {
+                                "actions": {
+                                    "export": True,
+                                    "compiled": False,  # Disable "Save as PNG"
+                                    "source": False,   # Keep "View Source"
+                                    "editor": False    # Keep "Open in Vega Editor"
+                                }
+                            }
+                        }
                         ).configure(background='#FFFFFF')
 
                         st.altair_chart(altair_chart, use_container_width=True, key="chart")
@@ -139,4 +157,4 @@ with st.container(border=False,key="container"):
             else:
                 st.error(f"Error executing command: {result.stderr}")
     st.text(" ")
-    st.html("<p style='text-align: center; color: grey;'>Made with Streamlit 🎈 by <a href='https://github.com/mtworth' style='color: grey;'>@mtworth</a></p>") 
+    st.html("<p style='text-align: center; color: grey;'>Made with Streamlit 🎈 by <a href='https://github.com/mtworth' style='color: grey;'>@mtworth</a>. For more information, check out the  <a href='https://github.com/mtworth/sectext' style='color: grey;'>read me</a>.</p>") 
