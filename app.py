@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import subprocess
-import matplotlib.pyplot as plt
 import io
 import altair as alt
 import uuid
