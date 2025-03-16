@@ -5,6 +5,9 @@ import io
 import altair as alt
 import uuid
 
+st.set_page_config(
+    page_title="SEC 10k Text Analytics",
+    page_icon="📈")
 
 container_style = """
     <style>
