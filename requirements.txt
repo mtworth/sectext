@@ -1,0 +1,4 @@
+edgar-tool
+streamlit
+pandas
+matplotlib

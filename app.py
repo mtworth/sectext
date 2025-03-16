@@ -21,29 +21,38 @@ st.markdown(container_style, unsafe_allow_html=True)
 with st.container(border=False,key="container"):
     # Streamlit UI
     #st.title("EDGAR Tool Search")
-    st.html("<p style='font-size: 32px; text-align: center; font-weight: bold;'>SEC Filings Search Tool</p>")
+    st.html("<p style='font-size: 32px; text-align: center; font-weight: bold;'>🔍 SEC Filings Text Analytics 📈</p>")
+    st.html("<p style='font-size: 20px; text-align: keft;'>Search millions of SEC filings for keywords and generate graphs to visualize trends, all in one simple tool.</p>")
     # User inputs
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         query = st.text_input("Enter search query:", "Tsunami Hazards")
     with col2: 
-        start_date = st.text_input("Start date (YYYY-MM-DD):", "2021-01-01")
+        st.text("Start date:")
+        start_date = st.text_input("Start date:", "2021-01-01",label_visibility = "collapsed")
     with col3:
-        end_date = st.text_input("End date (YYYY-MM-DD):", "2021-12-31")
+        end_date = st.text_input("End date:", "2021-12-31")
+    with col4:
+        st.text(" ")
+        st.text(" ")
+        st.text(" ")
+        search = st.button("Search",key="search",type="primary",use_container_width=True)
 
     # Output file
     output_file = "results.csv"
+    #col4, col5, col6 = st.columns(3)
 
-    # Run the command when the button is clicked
-    if st.button("Run EDGAR Tool"):
+    
+        # Run the command when the button is clicked
+    if search:
         command = [
             "edgar-tool", "text_search", query,
             "--start_date", start_date, "--end_date", end_date,
             "--output", output_file
         ]
         
-        with st.spinner("Running EDGAR Tool..."):
+        with st.spinner("Searching millions of filings..."):
             result = subprocess.run(command, capture_output=True, text=True)
             
             if result.returncode == 0:
@@ -54,10 +63,10 @@ with st.container(border=False,key="container"):
                     df = pd.read_csv(output_file)
 
                     # Ensure the 'filing_date' column is in datetime format
-                    df["filing_date"] = pd.to_datetime(df["filing_date"])
+                    df["filing_year"] = df["filing_date"].str[:4]
 
                     # Extract year and count filings per year
-                    filings_per_year = df["filing_date"].dt.year.value_counts().sort_index()
+                    filings_per_year = df["filing_date"].value_counts().sort_index()
 
                     # Plot bar chart
                     fig, ax = plt.subplots()
