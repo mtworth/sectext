@@ -108,6 +108,8 @@ with st.container(border=False,key="container"):
                     filings_per_year = df["filing_year"].value_counts().sort_index().reset_index()
                     filings_per_year.columns = ["Year", "Count"]
                     with st.container():
+                        st.text(f'SEC 10-K Filings by Year Containing "{query}"')
+                        st.caption( f"From {start_year} to {end_year} via SEC's EDGAR")
                         altair_chart = alt.Chart(filings_per_year).mark_bar().encode(
                             x='Year:O',
                             y='Count:Q',
